@@ -60,18 +60,14 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Send message data.
     # Fill in start
-    subject = "Subject: Email Test\r\n\r\n" 
-    clientSocket.send(subject.encode())
-    date = time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.gmtime())
-    date = date + "\r\n\r\n"
-    clientSocket.send(date.encode())
     clientSocket.send(msg.encode())
     # Fill in end
 
     # Message ends with a single period, send message end and handle server response.
     # Fill in start
     clientSocket.send(endmsg.encode())
-    recv_msg = clientSocket.recv(1024)
+    recv = clientSocket.recv(1024)
+    recv = recv.decode()
     #print("Response after sending message body:"+recv_msg.decode())
     # Fill in end
 
@@ -80,7 +76,6 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
     quit = "QUIT\r\n"
     clientSocket.send(quit.encode())
     recv = clientSocket.recv(1024)
-    #print(recv.decode())
     clientSocket.close()
     # Fill in end
 
